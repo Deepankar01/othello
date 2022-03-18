@@ -1,14 +1,16 @@
 """Creates an Othello Board"""
 import numpy as np
 from othello.disc import Disc
+from othello.error import DiscAlreadyAtPlace
 
+DEFAULT_VALUE_OF_BOARD_ELEMENT = '0'
 
 class Board:
     """Othello Board
     """
     def __init__(self) -> None:
         self.board = np.zeros(shape=(8,8), dtype=Disc)
-        self.board.fill('0')
+        self.board.fill(DEFAULT_VALUE_OF_BOARD_ELEMENT)
         self.white_discs:int = 32
         self.black_discs:int = 32
         self.__set_board()
@@ -43,8 +45,11 @@ class Board:
             y_axis (int): y axis of the board
             disc_type (Disc): type of disc type
         """
-        self.board[x_axis, y_axis] = disc_type
-        self.__update_disc_count(disc_type)
+        if self.board[x_axis, y_axis] == DEFAULT_VALUE_OF_BOARD_ELEMENT:
+            self.board[x_axis, y_axis] = disc_type
+            self.__update_disc_count(disc_type)
+        else:
+            raise DiscAlreadyAtPlace(f'unable to place {disc_type} disc as {self.board[x_axis, y_axis]} disc is already at ({x_axis},{y_axis})')
 
     def flip_disc(self,  x_axis: int, y_axis:int) -> None:
         """Flip a disc on the board

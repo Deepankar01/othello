@@ -28,5 +28,4 @@ class Othello:
         """Place a disc on the board and validate whether it's a valid move or not"""
         self.board.add_disc(0,0, self.current_chance)
         self.__switch_current_chance()
-        self.board.add_disc(1,4, self.current_chance)
         
